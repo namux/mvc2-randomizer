@@ -7,12 +7,26 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Marvel vs Capcom 2 Team Generator</h1>
-      <div>
-        <button onClick={() => setMode('regular')}>Regular</button>
-        <button onClick={() => setMode('ratio')}>Ratio (7 Points)</button>
-      </div>
-      {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
+      <header className="App-header">
+        <h1>Marvel vs Capcom 2 Team Generator</h1>
+        <div className="mode-selector">
+          <button 
+            className={mode === 'regular' ? 'active' : ''}
+            onClick={() => setMode('regular')}
+          >
+            Regular
+          </button>
+          <button 
+            className={mode === 'ratio' ? 'active' : ''}
+            onClick={() => setMode('ratio')}
+          >
+            Ratio (7 Points)
+          </button>
+        </div>
+      </header>
+      <main>
+        {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
+      </main>
     </div>
   );
 }

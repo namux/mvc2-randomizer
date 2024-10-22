@@ -21,7 +21,7 @@ const RatioTeamBuilder = () => {
     let newTeam = [];
     let points = 7;
     
-    while (newTeam.length < 3 && points > -1) {
+    while (newTeam.length < 3 && points > 0) {
       const maxRatio = Math.min(points, 5);
       const availableCharacters = characters.filter(char => char.ratio <= maxRatio);
       const randomChar = getRandomCharacter(newTeam.map(c => c.name), availableCharacters);
@@ -33,9 +33,9 @@ const RatioTeamBuilder = () => {
         break;
       }
     }
-
+    
     setTeam(newTeam);
-    setRemainingPoints(7 - newTeam.reduce((sum, char) => sum + char.ratio, 0));
+    setRemainingPoints(points);
   };
 
   return (
@@ -44,26 +44,27 @@ const RatioTeamBuilder = () => {
       <p>Remaining Points: {remainingPoints}</p>
       <button onClick={resetTeam}>Reset Team</button>
       <button onClick={generateRandomTeam}>Generate Random Team</button>
-      <ul>
+      <div className="team-display">
         {team.map((char) => (
-          <li key={char.name}>{char.name} ({char.ratio} points)</li>
+          <div key={char.name} className="character-card">
+            <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+            <p>{char.name} ({char.ratio} points)</p>
+          </div>
         ))}
-      </ul>
+      </div>
       <h3>Available Characters:</h3>
-      {[5, 4, 3, 2, 1, 0, -1].map((ratio) => (
-        <div key={ratio}>
-          <h4>{ratio} Point Characters:</h4>
-          {getCharactersByRatio(ratio).map((char) => (
-            <button
-              key={char.name}
-              onClick={() => addCharacter(char)}
-              disabled={team.length === 3 || remainingPoints < char.ratio}
-            >
-              {char.name}
-            </button>
-          ))}
-        </div>
-      ))}
+      <div className="available-characters">
+        {characters.map((char) => (
+          <button
+            key={char.name}
+            onClick={() => addCharacter(char)}
+            disabled={team.length === 3 || remainingPoints < char.ratio}
+          >
+            <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+            <span>{char.name}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
