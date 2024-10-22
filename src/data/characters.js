@@ -48,7 +48,7 @@ export const characters = [
   { name: 'Sabretooth', ratio: 2, image: '/images/characters/sabretooth.png' },
   { name: 'Sakura', ratio: 2, image: '/images/characters/sakura.png' },
   { name: 'SonSon', ratio: 2, image: '/images/characters/sonson.png' },
-  { name: 'Wolverine (Adamantium)', ratio: 2, image: '/images/characters/wolverine.png' },
+  { name: 'Wolverine', ratio: 2, image: '/images/characters/wolverine.png' },
   
   // 1 point
   { name: 'Hayato', ratio: 1, image: '/images/characters/hayato.png' },
