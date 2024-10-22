@@ -5,8 +5,13 @@ const RatioTeamBuilder = () => {
   const [team, setTeam] = useState([]);
   const [remainingPoints, setRemainingPoints] = useState(7);
 
-  const addCharacter = (character) => {
-    if (team.length < 3 && remainingPoints >= character.ratio) {
+  const handleCharacterClick = (character) => {
+    if (team.some(c => c.name === character.name)) {
+      // Remove the character from the team
+      setTeam(team.filter(c => c.name !== character.name));
+      setRemainingPoints(remainingPoints + character.ratio);
+    } else if (team.length < 3 && remainingPoints >= character.ratio) {
+      // Add the character to the team if there's space and enough points
       setTeam([...team, character]);
       setRemainingPoints(remainingPoints - character.ratio);
     }
@@ -42,28 +47,27 @@ const RatioTeamBuilder = () => {
     <div>
       <h2>Ratio Team Builder</h2>
       <p>Remaining Points: {remainingPoints}</p>
+      <p>Team Size: {team.length} / 3</p>
       <button onClick={resetTeam}>Reset Team</button>
       <button onClick={generateRandomTeam}>Generate Random Team</button>
-      <div className="team-display">
-        {team.map((char) => (
-          <div key={char.name} className="character-card">
-            <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
-            <p>{char.name} ({char.ratio} points)</p>
-          </div>
-        ))}
-      </div>
-      <h3>Available Characters:</h3>
+      <h3>Characters:</h3>
       <div className="available-characters">
-        {characters.map((char) => (
-          <button
-            key={char.name}
-            onClick={() => addCharacter(char)}
-            disabled={team.length === 3 || remainingPoints < char.ratio}
-          >
-            <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
-            <span>{char.name}</span>
-          </button>
-        ))}
+        {characters.map((char) => {
+          const isSelected = team.some(c => c.name === char.name);
+          return (
+            <div key={char.name} className="character-item">
+              <button
+                onClick={() => handleCharacterClick(char)}
+                disabled={team.length === 3 && !isSelected || (!isSelected && remainingPoints < char.ratio)}
+                className={isSelected ? 'selected' : ''}
+              >
+                <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+              </button>
+              <span className="character-name">{char.name}</span>
+              <span className="character-ratio">({char.ratio})</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

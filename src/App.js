@@ -4,6 +4,17 @@ import RatioTeamBuilder from './components/RatioTeamBuilder';
 
 function App() {
   const [mode, setMode] = useState('regular');
+  const [selectedCharacters, setSelectedCharacters] = useState([]);
+
+  const handleCharacterClick = (character) => {
+    if (selectedCharacters.some(c => c.id === character.id)) {
+      // Remove the character from the team
+      setSelectedCharacters(selectedCharacters.filter(c => c.id !== character.id));
+    } else if (selectedCharacters.length < 4) {
+      // Add the character to the team if there's space
+      setSelectedCharacters([...selectedCharacters, character]);
+    }
+  };
 
   return (
     <div className="App">
@@ -25,7 +36,14 @@ function App() {
         </div>
       </header>
       <main>
-        {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
+        {mode === 'regular' ? (
+          <TeamGenerator />
+        ) : (
+          <RatioTeamBuilder
+            selectedCharacters={selectedCharacters}
+            handleCharacterClick={handleCharacterClick}
+          />
+        )}
       </main>
     </div>
   );
