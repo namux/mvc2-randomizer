@@ -9,7 +9,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build && echo 'tech.nam-ux.com' > build/CNAME",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "postinstall": "chmod +x node_modules/.bin/gh-pages"
   },
   "keywords": [],
   "author": "",
