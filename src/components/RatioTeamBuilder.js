@@ -82,8 +82,8 @@ const RatioTeamBuilder = () => {
       <div className="left-column">
         <h2>Ratio Team Builder</h2>
         <div className="points-display">
-          <p className="total-points">Total Points: {totalPoints} / 7</p>
-          <p className="remaining-points">Remaining Points: {7 - totalPoints}</p>
+          <p className="total-points">Total: {totalPoints}/7</p>
+          <p className="remaining-points">Remaining: {7 - totalPoints}</p>
         </div>
         <div className="team-display">
           {team.map((char, index) => (
@@ -128,8 +128,7 @@ const RatioTeamBuilder = () => {
                   />
                 </button>
                 <div className="character-info">
-                  <span className="character-name">{char.name}</span>
-                  <span className="character-ratio">({char.ratio})</span>
+                  <span className="character-name">{char.name} ({char.ratio})</span>
                 </div>
               </div>
             );
