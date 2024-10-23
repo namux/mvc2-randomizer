@@ -9,7 +9,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "node --max_old_space_size=4096 node_modules/gh-pages/bin/gh-pages.js -d build"
+    "deploy": "push-dir --dir=build --branch=gh-pages --cleanup --verbose"
   },
   "keywords": [],
   "author": "",
@@ -32,7 +32,8 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^6.2.0"
+    "gh-pages": "^6.2.0",
+    "push-dir": "^0.4.1"
   },
   "homepage": "https://tech.nam-ux.com"
 }
