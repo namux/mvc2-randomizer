@@ -9,7 +9,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build && echo 'tech.nam-ux.com' > build/CNAME",
-    "deploy": "push-dir --dir=build --branch=gh-pages --cleanup --verbose"
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "",
