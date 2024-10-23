@@ -1,28 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { characters, getCharactersByRatio, getRandomCharacter } from '../data/characters';
 
 const RatioTeamBuilder = () => {
   const [team, setTeam] = useState([null, null, null]);
-  const [remainingPoints, setRemainingPoints] = useState(7);
+  const [totalPoints, setTotalPoints] = useState(0);
 
   const handleCharacterClick = (character) => {
     setTeam(prevTeam => {
-      // Check if the character is already in the team
       const existingIndex = prevTeam.findIndex(char => char && char.name === character.name);
       
       if (existingIndex !== -1) {
         // Remove character if it's already in the team
         const newTeam = [...prevTeam];
         newTeam[existingIndex] = null;
-        setRemainingPoints(prev => prev + character.ratio);
         return newTeam;
       } else {
-        // Add character to the first empty slot if not already in team
+        // Add character to the first empty slot if not already in team and enough points
         const emptyIndex = prevTeam.findIndex(char => char === null);
-        if (emptyIndex !== -1 && remainingPoints >= character.ratio) {
+        if (emptyIndex !== -1 && totalPoints + character.ratio <= 7) {
           const newTeam = [...prevTeam];
           newTeam[emptyIndex] = character;
-          setRemainingPoints(prev => prev - character.ratio);
           return newTeam;
         }
       }
@@ -32,33 +29,59 @@ const RatioTeamBuilder = () => {
     });
   };
 
+  useEffect(() => {
+    const newTotalPoints = team.reduce((sum, char) => sum + (char ? char.ratio : 0), 0);
+    setTotalPoints(newTotalPoints);
+  }, [team]);
+
   const resetTeam = () => {
     setTeam([null, null, null]);
-    setRemainingPoints(7);
+    setTotalPoints(0);
   };
 
   const generateRandomTeam = () => {
     let newTeam = [null, null, null];
-    let points = 7;
+    let points = 0;
     
     for (let i = 0; i < 3; i++) {
-      const maxRatio = Math.min(points, 5);
-      const availableCharacters = characters.filter(char => char.ratio <= maxRatio);
+      const remainingPoints = 7 - points;
+      const remainingSlots = 3 - i;
+      const maxRatio = Math.min(remainingPoints - (remainingSlots - 1), 5); // Ensure we can fill remaining slots
+      const minRatio = i === 2 ? remainingPoints : 1; // For the last slot, use all remaining points
+      
+      const availableCharacters = characters.filter(char => char.ratio <= maxRatio && char.ratio >= minRatio);
+      
+      if (availableCharacters.length === 0) {
+        // If we can't find a suitable character, start over
+        return generateRandomTeam();
+      }
+
       const randomChar = getRandomCharacter(newTeam.filter(Boolean).map(c => c.name), availableCharacters);
       
       if (randomChar) {
         newTeam[i] = randomChar;
-        points -= randomChar.ratio;
+        points += randomChar.ratio;
+      } else {
+        // If we can't get a random character, start over
+        return generateRandomTeam();
       }
     }
     
+    // Double-check that we have exactly 7 points and 3 characters
+    if (points !== 7 || newTeam.some(char => char === null)) {
+      return generateRandomTeam();
+    }
+    
     setTeam(newTeam);
-    setRemainingPoints(points);
+    setTotalPoints(points);
   };
+
+  const remainingPoints = 7 - totalPoints;
 
   return (
     <div>
       <h2>Ratio Team Builder</h2>
+      <p>Total Points: {totalPoints} / 7</p>
       <p>Remaining Points: {remainingPoints}</p>
       <div className="team-display">
         {team.map((char, index) => (
@@ -83,11 +106,12 @@ const RatioTeamBuilder = () => {
       <div className="available-characters">
         {characters.map((char) => {
           const isSelected = team.some(c => c && c.name === char.name);
+          const canSelect = !isSelected && remainingPoints >= char.ratio && team.some(c => c === null);
           return (
             <div key={char.name} className="character-item">
               <button
                 onClick={() => handleCharacterClick(char)}
-                disabled={team.every(Boolean) && !isSelected || (!isSelected && remainingPoints < char.ratio)}
+                disabled={!isSelected && !canSelect}
                 className={isSelected ? 'selected' : ''}
               >
                 <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
