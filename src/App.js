@@ -4,46 +4,42 @@ import RatioTeamBuilder from './components/RatioTeamBuilder';
 
 function App() {
   const [mode, setMode] = useState('regular');
-  const [selectedCharacters, setSelectedCharacters] = useState([]);
-
-  const handleCharacterClick = (character) => {
-    if (selectedCharacters.some(c => c.id === character.id)) {
-      // Remove the character from the team
-      setSelectedCharacters(selectedCharacters.filter(c => c.id !== character.id));
-    } else if (selectedCharacters.length < 4) {
-      // Add the character to the team if there's space
-      setSelectedCharacters([...selectedCharacters, character]);
-    }
-  };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Marvel vs Capcom 2 Team Generator</h1>
-        <div className="mode-selector">
-          <button 
-            className={mode === 'regular' ? 'active' : ''}
-            onClick={() => setMode('regular')}
-          >
-            Regular
-          </button>
-          <button 
-            className={mode === 'ratio' ? 'active' : ''}
-            onClick={() => setMode('ratio')}
-          >
-            Ratio (7 Points)
-          </button>
-        </div>
+        <nav className="main-nav">
+          <div className="nav-logo">FGC Tools</div>
+          <ul className="nav-links">
+            <li>
+              <a 
+                href="#"
+                className={mode === 'regular' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMode('regular');
+                }}
+              >
+                MvC2 Team Generator
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#"
+                className={mode === 'ratio' ? 'active' : ''}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMode('ratio');
+                }}
+              >
+                Ratio Team Builder
+              </a>
+            </li>
+          </ul>
+        </nav>
       </header>
       <main>
-        {mode === 'regular' ? (
-          <TeamGenerator />
-        ) : (
-          <RatioTeamBuilder
-            selectedCharacters={selectedCharacters}
-            handleCharacterClick={handleCharacterClick}
-          />
-        )}
+        {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
       </main>
     </div>
   );

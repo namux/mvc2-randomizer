@@ -4,6 +4,7 @@ import { characters, getCharactersByRatio, getRandomCharacter } from '../data/ch
 const RatioTeamBuilder = () => {
   const [team, setTeam] = useState([null, null, null]);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleCharacterClick = (character) => {
     setTeam(prevTeam => {
@@ -79,50 +80,58 @@ const RatioTeamBuilder = () => {
   const remainingPoints = 7 - totalPoints;
 
   return (
-    <div>
-      <h2>Ratio Team Builder</h2>
-      <p>Total Points: {totalPoints} / 7</p>
-      <p>Remaining Points: {remainingPoints}</p>
-      <div className="team-display">
-        {team.map((char, index) => (
-          <div key={index} className="character-card">
-            {char ? (
-              <>
-                <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
-                <p>{char.name} ({char.ratio})</p>
-              </>
-            ) : (
-              <>
-                <img src={`/images/characters/slot-${index + 1}.png`} alt={`Empty Slot ${index + 1}`} />
-                <p>Empty Slot</p>
-              </>
-            )}
-          </div>
-        ))}
-      </div>
-      <button onClick={resetTeam}>Reset Team</button>
-      <button onClick={generateRandomTeam}>Generate Random Team</button>
-      <h3>Available Characters:</h3>
-      <div className="available-characters">
-        {characters.map((char) => {
-          const isSelected = team.some(c => c && c.name === char.name);
-          const canSelect = !isSelected && remainingPoints >= char.ratio && team.some(c => c === null);
-          return (
-            <div key={char.name} className="character-item">
-              <button
-                onClick={() => handleCharacterClick(char)}
-                disabled={!isSelected && !canSelect}
-                className={isSelected ? 'selected' : ''}
-              >
-                <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
-              </button>
-              <div className="character-info">
-                <span className="character-name">{char.name}</span>
-                <span className="character-ratio">({char.ratio})</span>
-              </div>
+    <div className="ratio-team-builder">
+      <div className="left-column">
+        <h2>Ratio Team Builder</h2>
+        <p>Total Points: {totalPoints} / 7</p>
+        <p>Remaining Points: {remainingPoints}</p>
+        <div className="team-display">
+          {team.map((char, index) => (
+            <div key={index} className={`character-card ${isAnimating ? 'fade-in' : ''}`}>
+              {char ? (
+                <>
+                  <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+                  <p>{char.name} ({char.ratio})</p>
+                </>
+              ) : (
+                <>
+                  <img src={`/images/characters/slot-${index + 1}.png`} alt={`Empty Slot ${index + 1}`} />
+                  <p>Empty Slot</p>
+                </>
+              )}
             </div>
-          );
-        })}
+          ))}
+        </div>
+        <div className="team-buttons">
+          <button onClick={generateRandomTeam} className="primary-button">
+            Generate Random Team
+          </button>
+          <button onClick={resetTeam} className="secondary-button">Reset Team</button>
+        </div>
+      </div>
+      <div className="right-column">
+        {/* <h3>Available Characters:</h3> */}
+        <div className="available-characters">
+          {characters.map((char) => {
+            const isSelected = team.some(c => c && c.name === char.name);
+            const canSelect = !isSelected && remainingPoints >= char.ratio && team.some(c => c === null);
+            return (
+              <div key={char.name} className="character-item">
+                <button
+                  onClick={() => handleCharacterClick(char)}
+                  disabled={!isSelected && !canSelect}
+                  className={isSelected ? 'selected' : ''}
+                >
+                  <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+                </button>
+                <div className="character-info">
+                  <span className="character-name">{char.name}</span>
+                  <span className="character-ratio">({char.ratio})</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
