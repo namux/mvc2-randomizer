@@ -35,10 +35,9 @@ code {
 }
 
 .App-header {
-  background-color: var(--primary-color);
+  background-color: #1a1a1a;
   padding: 0;
-  /* margin-bottom: 40px; */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
 }
 
 h1, h2, h3 {
@@ -352,15 +351,17 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .nav-logo {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .nav-links {
@@ -371,39 +372,46 @@ li {
 }
 
 .nav-links li {
-  margin-left: 1.5rem;
+  margin-left: 2rem;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   padding: 0.5rem 0;
   transition: color 0.3s ease;
-  position: relative;
-}
-
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: white;
-  transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
-  width: 100%;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--primary-color);
 }
 
-.ratio-team-builder .left-column p {
-  margin: 5px 0;
+/* Add this new class for the Team Generator's team display */
+.team-display-large {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  height: 400px; /* Changed from 600px to 400px */
+}
+
+.team-display-large .character-card {
+  width: 85px; /* Adjusted proportionally from 128px */
+}
+
+.team-display-large .character-card img {
+  width: 85px; /* Adjusted proportionally from 128px */
+  height: 340px; /* Adjusted proportionally from 512px */
+}
+
+.team-display-large .character-card p {
+  font-size: 16px; /* Slightly reduced from 20px */
+  margin-top: 8px; /* Slightly reduced from 10px */
 }

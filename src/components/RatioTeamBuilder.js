@@ -104,7 +104,7 @@ const RatioTeamBuilder = () => {
         </div>
         <div className="team-buttons">
           <button onClick={generateRandomTeam} className="primary-button">
-            Generate Random Team
+            Generate Ratio Team
           </button>
           <button onClick={resetTeam} className="secondary-button">Reset Team</button>
         </div>

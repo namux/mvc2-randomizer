@@ -84,7 +84,7 @@ const TeamGenerator = () => {
   return (
     <div>
       <h2>Random Team Generator</h2>
-      <div className="team-display">
+      <div className="team-display-large">
         {[0, 1, 2].map(renderCharacterSlot)}
       </div>
       <button onClick={generateTeam} disabled={isSpinning.some(Boolean)}>
