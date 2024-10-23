@@ -77,14 +77,14 @@ const RatioTeamBuilder = () => {
     setTotalPoints(points);
   };
 
-  const remainingPoints = 7 - totalPoints;
-
   return (
     <div className="ratio-team-builder">
       <div className="left-column">
         <h2>Ratio Team Builder</h2>
-        <p>Total Points: {totalPoints} / 7</p>
-        <p>Remaining Points: {remainingPoints}</p>
+        <div className="points-display">
+          <p className="total-points">Total Points: {totalPoints} / 7</p>
+          <p className="remaining-points">Remaining Points: {7 - totalPoints}</p>
+        </div>
         <div className="team-display">
           {team.map((char, index) => (
             <div key={index} className={`character-card ${isAnimating ? 'fade-in' : ''}`}>
@@ -110,11 +110,10 @@ const RatioTeamBuilder = () => {
         </div>
       </div>
       <div className="right-column">
-        {/* <h3>Available Characters:</h3> */}
         <div className="available-characters">
           {characters.map((char) => {
             const isSelected = team.some(c => c && c.name === char.name);
-            const canSelect = !isSelected && remainingPoints >= char.ratio && team.some(c => c === null);
+            const canSelect = !isSelected && (7 - totalPoints) >= char.ratio && team.some(c => c === null);
             return (
               <div key={char.name} className="character-item">
                 <button
@@ -122,7 +121,11 @@ const RatioTeamBuilder = () => {
                   disabled={!isSelected && !canSelect}
                   className={isSelected ? 'selected' : ''}
                 >
-                  <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
+                  <img 
+                    src={char.tileImage} 
+                    alt={char.name} 
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/tiles/default.png' }} 
+                  />
                 </button>
                 <div className="character-info">
                   <span className="character-name">{char.name}</span>
