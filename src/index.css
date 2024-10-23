@@ -25,13 +25,8 @@ code {
 
 .App {
   text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  /* padding: 0 20px 40px; */
-  /* background-color: rgba(255, 255, 255, 0.9); */
-  min-height: 100vh; /* Ensure the App takes at least the full viewport height */
-  /* border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  width: 100%;
+  min-height: 100vh;
 }
 
 .App-header {
@@ -415,3 +410,66 @@ li {
   font-size: 16px; /* Slightly reduced from 20px */
   margin-top: 8px; /* Slightly reduced from 10px */
 }
+
+/* Add these styles to your existing CSS file */
+
+.App {
+  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.navbar-logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  color: var(--primary-color);
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* You can remove or comment out the following styles if they're no longer needed */
+/*
+.main-nav,
+.nav-logo,
+.nav-links {
+  // Remove or comment out these styles
+}
+*/

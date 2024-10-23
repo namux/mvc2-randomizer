@@ -8,10 +8,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <nav className="main-nav">
-          <div className="nav-logo">FGC Tools</div>
-          <ul className="nav-links">
-            <li>
+        <nav className="navbar">
+          <div className="navbar-container">
+            <div className="navbar-logo">FGC Tools</div>
+            <div className="navbar-links">
               <a 
                 href="#"
                 className={mode === 'regular' ? 'active' : ''}
@@ -22,8 +22,6 @@ function App() {
               >
                 MvC2 Team Generator
               </a>
-            </li>
-            <li>
               <a 
                 href="#"
                 className={mode === 'ratio' ? 'active' : ''}
@@ -34,11 +32,11 @@ function App() {
               >
                 Ratio Team Builder
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </nav>
       </header>
-      <main>
+      <main className="content-container">
         {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
       </main>
     </div>
