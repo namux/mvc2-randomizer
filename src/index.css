@@ -139,6 +139,7 @@ li {
   align-items: flex-start;
   gap: 20px;
   margin-top: 30px;
+  margin-bottom: 20px;
   height: 450px;
 }
 
@@ -440,7 +441,7 @@ li {
 
 .navbar-links {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .navbar-links a {
@@ -497,4 +498,31 @@ li {
 
 .ratio-team-builder h2 {
   margin-bottom: 10px; /* Reduce this value as needed */
+}
+
+/* Add this to your existing button styles */
+button:disabled,
+button.generating {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Add these styles to your existing button styles */
+.team-generator-button {
+  width: 200px; /* Adjust this value as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+button:disabled,
+button.generating {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }

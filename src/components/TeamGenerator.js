@@ -81,14 +81,20 @@ const TeamGenerator = () => {
     return () => intervals.forEach(interval => interval && clearInterval(interval));
   }, [isSpinning]);
 
+  const isGenerating = isSpinning.some(Boolean);
+
   return (
     <div>
-      <h2>Random Team Generator</h2>
+      <h2>MvC2 Team Generator</h2>
       <div className="team-display-large">
         {[0, 1, 2].map(renderCharacterSlot)}
       </div>
-      <button onClick={generateTeam} disabled={isSpinning.some(Boolean)}>
-        {isSpinning.some(Boolean) ? 'Generating...' : 'Generate Team'}
+      <button 
+        onClick={generateTeam} 
+        disabled={isGenerating}
+        className={`team-generator-button ${isGenerating ? 'generating' : ''}`}
+      >
+        {isGenerating ? 'Generating...' : 'Generate Team'}
       </button>
     </div>
   );

@@ -80,7 +80,7 @@ const RatioTeamBuilder = () => {
   return (
     <div className="ratio-team-builder">
       <div className="left-column">
-        <h2>Ratio Team Builder</h2>
+        <h2>MvC2 Ratio Team Builder</h2>
         <div className="points-display">
           <p className="total-points">Total: {totalPoints}/7</p>
           <p className="remaining-points">Remaining: {7 - totalPoints}</p>

@@ -30,7 +30,7 @@ function App() {
                   setMode('ratio');
                 }}
               >
-                Ratio Team Builder
+                MvC2 Ratio Builder
               </a>
             </div>
           </div>
