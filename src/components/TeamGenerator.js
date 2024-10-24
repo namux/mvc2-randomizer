@@ -91,7 +91,13 @@ const TeamGenerator = () => {
       </div>
       <div className="team-generator-button-container">
         <button 
-          onClick={generateTeam} 
+          onClick={() => {
+            generateTeam();
+            gtag('event', 'click', {
+              'event_category': 'Button',
+              'event_label': 'Assemble My Team'
+            });
+          }} 
           disabled={isGenerating}
           className={`team-generator-button ${isGenerating ? 'generating' : ''}`}
         >

@@ -136,10 +136,22 @@ const RatioTeamBuilder = () => {
           ))}
         </div>
         <div className="team-buttons">
-          <button onClick={generateRandomTeam} className="secondary-button">
+          <button onClick={() => {
+            generateRandomTeam();
+            gtag('event', 'click', {
+              'event_category': 'Button',
+              'event_label': 'Randomize'
+            });
+          }} className="secondary-button">
             Randomize
           </button>
-          <button onClick={resetTeam} className="secondary-button">Reset</button>
+          <button onClick={() => {
+            resetTeam();
+            gtag('event', 'click', {
+              'event_category': 'Button',
+              'event_label': 'Reset'
+            });
+          }} className="secondary-button">Reset</button>
         </div>
       </div>
       <div className="right-column desktop-only">

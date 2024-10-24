@@ -38,6 +38,10 @@ function App() {
                   e.preventDefault();
                   setMode('regular');
                   setIsMenuOpen(false);
+                  gtag('event', 'click', {
+                    'event_category': 'Navigation',
+                    'event_label': 'MvC2 Team Generator'
+                  });
                 }}
               >
                 MvC2 Team Generator
