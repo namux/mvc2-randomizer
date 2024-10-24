@@ -5,29 +5,49 @@ const RatioTeamBuilder = () => {
   const [team, setTeam] = useState([null, null, null]);
   const [totalPoints, setTotalPoints] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   const handleCharacterClick = (character) => {
-    setTeam(prevTeam => {
-      const existingIndex = prevTeam.findIndex(char => char && char.name === character.name);
-      
-      if (existingIndex !== -1) {
-        // Remove character if it's already in the team
+    if (selectedSlot !== null) {
+      setTeam(prevTeam => {
         const newTeam = [...prevTeam];
-        newTeam[existingIndex] = null;
+        newTeam[selectedSlot] = character;
         return newTeam;
-      } else {
-        // Add character to the first empty slot if not already in team and enough points
-        const emptyIndex = prevTeam.findIndex(char => char === null);
-        if (emptyIndex !== -1 && totalPoints + character.ratio <= 7) {
+      });
+      setIsModalOpen(false);
+      setSelectedSlot(null);
+    } else {
+      // Desktop behavior
+      setTeam(prevTeam => {
+        const existingIndex = prevTeam.findIndex(char => char && char.name === character.name);
+        
+        if (existingIndex !== -1) {
           const newTeam = [...prevTeam];
-          newTeam[emptyIndex] = character;
+          newTeam[existingIndex] = null;
           return newTeam;
+        } else {
+          const emptyIndex = prevTeam.findIndex(char => char === null);
+          if (emptyIndex !== -1 && totalPoints + character.ratio <= 7) {
+            const newTeam = [...prevTeam];
+            newTeam[emptyIndex] = character;
+            return newTeam;
+          }
         }
-      }
-      
-      // Return unchanged team if no action was taken
-      return prevTeam;
-    });
+        
+        return prevTeam;
+      });
+    }
+  };
+
+  const openModal = (index) => {
+    setSelectedSlot(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedSlot(null);
   };
 
   useEffect(() => {
@@ -87,7 +107,11 @@ const RatioTeamBuilder = () => {
         </div>
         <div className="team-display">
           {team.map((char, index) => (
-            <div key={index} className={`character-card ${isAnimating ? 'fade-in' : ''}`}>
+            <div 
+              key={index} 
+              className={`character-card ${isAnimating ? 'fade-in' : ''}`}
+              onClick={() => openModal(index)}
+            >
               {char ? (
                 <>
                   <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
@@ -109,7 +133,7 @@ const RatioTeamBuilder = () => {
           <button onClick={resetTeam} className="secondary-button">Reset Team</button>
         </div>
       </div>
-      <div className="right-column">
+      <div className="right-column desktop-only">
         <div className="available-characters">
           {characters.map((char) => {
             const isSelected = team.some(c => c && c.name === char.name);
@@ -135,6 +159,36 @@ const RatioTeamBuilder = () => {
           })}
         </div>
       </div>
+      {isModalOpen && (
+        <div className="character-select-modal">
+          <div className="modal-content">
+            <button className="close-modal" onClick={closeModal}>×</button>
+            <h3>Select a Character</h3>
+            <div className="modal-characters">
+              {characters.map((char) => {
+                const canSelect = (7 - totalPoints) >= char.ratio;
+                return (
+                  <div key={char.name} className="character-item">
+                    <button
+                      onClick={() => handleCharacterClick(char)}
+                      disabled={!canSelect}
+                    >
+                      <img 
+                        src={char.tileImage} 
+                        alt={char.name} 
+                        onError={(e) => { e.target.onerror = null; e.target.src = '/images/tiles/default.png' }} 
+                      />
+                    </button>
+                    <div className="character-info">
+                      <span className="character-name">{char.name} ({char.ratio})</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

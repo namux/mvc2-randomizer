@@ -5,9 +5,11 @@ import RatioTeamBuilder from './components/RatioTeamBuilder';
 function App() {
   const [mode, setMode] = useState('regular');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <div className="App">
@@ -23,13 +25,19 @@ function App() {
                 openModal();
               }}>Support</a>
             </div>
-            <div className="navbar-links">
+            <div className="hamburger-menu" onClick={toggleMenu}>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
               <a 
                 href="#"
                 className={mode === 'regular' ? 'active' : ''}
                 onClick={(e) => {
                   e.preventDefault();
                   setMode('regular');
+                  setIsMenuOpen(false);
                 }}
               >
                 MvC2 Team Generator
@@ -40,6 +48,7 @@ function App() {
                 onClick={(e) => {
                   e.preventDefault();
                   setMode('ratio');
+                  setIsMenuOpen(false);
                 }}
               >
                 MvC2 Ratio Builder
@@ -56,7 +65,7 @@ function App() {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Thanks for using FGC Tech!</h2>
-            <p>If you find this helpful, feel free to support me via the link below. If you have any suggestions or feedback, feel free to contact me via twitter</p>
+            <p>If you find this helpful, feel free to support me via the link below. If you have any suggestions or feedback, feel free to <a href="https://x.com/namux_" target="_blank" rel="noopener noreferrer">contact me on Twitter</a>.</p>
             <a href="https://streamlabs.com/namux/tip" target="_blank" rel="noopener noreferrer" className="donate-button">
               Donate via Streamlabs
             </a>

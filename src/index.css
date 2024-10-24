@@ -136,31 +136,34 @@ li {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  height: 450px;
+  gap: 10px;
+  margin: 20px auto;
+  height: auto;
+  flex-wrap: nowrap;
+  max-width: 100%;
 }
 
 .character-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 96px;
+  width: 30%;
+  max-width: 96px;
+  min-width: 70px;
 }
 
-.character-card img,
-.character-item button img {
-  width: 96px;
-  height: 384px;
-  object-fit: cover;
+.character-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 4; /* Maintain a 1:4 aspect ratio */
+  object-fit: contain; /* Ensure the entire image is visible */
   display: block;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .character-card p {
   margin: 5px 0 0 0;
-  font-size: 18px;
+  font-size: 14px;
   word-wrap: break-word;
   max-width: 100%;
   text-align: center;
@@ -296,27 +299,28 @@ li {
 .ratio-team-builder {
   display: flex;
   gap: 40px;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  flex-wrap: wrap;
 }
 
 .left-column {
   flex: 0 0 auto;
   width: 350px;
   position: sticky;
-  top: 20px; /* Adjust as needed */
-  align-self: flex-start;
+  top: 20px;
+  /* align-self: flex-start; */
 }
 
 .right-column {
   flex: 1;
-  min-width: 300px; /* Ensure a minimum width for the character grid */
+  min-width: 300px;
 }
 
 .available-characters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px;
+  justify-content: center;
+  padding: 0.5rem;
 }
     
 .team-buttons {
@@ -550,6 +554,88 @@ button.generating {
   opacity: 1;
 }
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 300px;
+    flex-direction: column;
+    background-color: #282828;
+    padding-top: 3.5rem;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+  }
+
+  .navbar-links.open {
+    transform: translateX(0);
+  }
+
+  .navbar-links a {
+    padding: 1rem;
+    text-align: left;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-container {
+    justify-content: space-between;
+  }
+
+  .ratio-team-builder {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-column,
+  .right-column {
+    width: 100%;
+    max-width: 350px; /* Limit the maximum width on mobile */
+  }
+
+  .left-column {
+    position: static; /* Remove sticky positioning on mobile */
+    margin-bottom: 20px;
+  }
+
+  .available-characters {
+    justify-content: center;
+  }
+
+  .team-display {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .character-card {
+    margin: 5px;
+  }
+
+  .team-display {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .character-card {
+    width: 32%; /* Adjust as needed */
+    margin: 0; /* Remove margin */
+  }
+
+  .character-card img {
+    max-height: 300px; /* Adjust as needed */
+  }
+
+  .character-card p {
+    font-size: 14px; /* Reduce font size for mobile */
+  }
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -575,19 +661,33 @@ button.generating {
   align-items: center;
 }
 
-.donate-button {
+.donate-button,
+.twitter-button {
   display: inline-block;
-  background-color: var(--primary-color);
-  color: white;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   text-decoration: none;
   margin-top: 1rem;
   transition: background-color 0.3s ease;
+  width: 200px;
+}
+
+.donate-button {
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .donate-button:hover {
   background-color: var(--button-hover);
+}
+
+.twitter-button {
+  background-color: #1DA1F2;
+  color: white;
+}
+
+.twitter-button:hover {
+  background-color: #0c85d0;
 }
 
 .close-modal {
@@ -601,3 +701,252 @@ button.generating {
 .close-modal:hover {
   color: #333;
 }
+
+.modal-content p a {
+  color: #1DA1F2; /* Twitter blue color */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.modal-content p a:hover {
+  color: #0c85d0; /* Darker shade for hover */
+  text-decoration: underline;
+}
+
+/* Remove the .twitter-button styles if they're no longer needed */
+
+/* Hamburger menu styles */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger-menu div {
+  width: 2rem;
+  height: 0.25rem;
+  background: white;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 300px;
+    flex-direction: column;
+    background-color: #282828;
+    padding-top: 3.5rem;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+  }
+
+  .navbar-links.open {
+    transform: translateX(0);
+  }
+
+  .navbar-links a {
+    padding: 1rem;
+    text-align: left;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .navbar-container {
+    justify-content: space-between;
+  }
+}
+
+/* Character Select Modal */
+.character-select-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.character-select-modal .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.character-select-modal .close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.character-select-modal h3 {
+  margin-bottom: 20px;
+}
+
+.character-select-modal .modal-characters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.character-select-modal .character-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+  margin-bottom: 10px;
+}
+
+.character-select-modal .character-item button {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.character-select-modal .character-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.character-select-modal .character-info {
+  text-align: center;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .character-select-modal .modal-content {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .character-select-modal .modal-characters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
+  .character-select-modal .character-item {
+    width: calc(20% - 8px); /* 5 items per row, accounting for gap */
+    margin-bottom: 10px;
+  }
+
+  .character-select-modal .character-item button {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .character-select-modal .character-info {
+    font-size: 9px;
+  }
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .ratio-team-builder {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-column {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .team-display {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .character-card {
+    width: 32%;
+    margin: 0;
+  }
+
+  .character-card img {
+    max-height: 300px;
+  }
+
+  .character-card p {
+    font-size: 14px;
+  }
+
+  .character-select-modal .modal-content {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  .character-select-modal .modal-characters {
+    /* display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); */
+    gap: 10px;
+  }
+
+  .character-select-modal .character-item {
+    /* width: auto; */
+  }
+
+  .character-select-modal .character-item button {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+}
+
