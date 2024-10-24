@@ -12,9 +12,15 @@ const RatioTeamBuilder = () => {
     if (selectedSlot !== null) {
       setTeam(prevTeam => {
         const newTeam = [...prevTeam];
-        newTeam[selectedSlot] = character;
+        // If the character is already in the selected slot, remove it
+        if (newTeam[selectedSlot] && newTeam[selectedSlot].name === character.name) {
+          newTeam[selectedSlot] = null;
+        } else {
+          newTeam[selectedSlot] = character;
+        }
         return newTeam;
       });
+      // Close the modal after selecting or deselecting a character
       setIsModalOpen(false);
       setSelectedSlot(null);
     } else {
@@ -101,9 +107,12 @@ const RatioTeamBuilder = () => {
     <div className="ratio-team-builder">
       <div className="left-column">
         <h2>MvC2 Ratio Team Builder</h2>
-        <div className="points-display">
+        <div className="points-display desktop-only">
           <p className="total-points">Total: {totalPoints}/7</p>
           <p className="remaining-points">Remaining: {7 - totalPoints}</p>
+        </div>
+        <div className="mobile-instructions">
+          Choose a slot to pick your character
         </div>
         <div className="team-display">
           {team.map((char, index) => (
@@ -127,10 +136,10 @@ const RatioTeamBuilder = () => {
           ))}
         </div>
         <div className="team-buttons">
-          <button onClick={generateRandomTeam} className="primary-button">
-            Generate Ratio Team
+          <button onClick={generateRandomTeam} className="secondary-button">
+            Randomize
           </button>
-          <button onClick={resetTeam} className="secondary-button">Reset Team</button>
+          <button onClick={resetTeam} className="secondary-button">Reset</button>
         </div>
       </div>
       <div className="right-column desktop-only">
@@ -164,14 +173,20 @@ const RatioTeamBuilder = () => {
           <div className="modal-content">
             <button className="close-modal" onClick={closeModal}>×</button>
             <h3>Select a Character</h3>
+            <div className="modal-points-display">
+              <p className="total-points">Total: {totalPoints}/7</p>
+              <p className="remaining-points">Remaining: {7 - totalPoints}</p>
+            </div>
             <div className="modal-characters">
               {characters.map((char) => {
-                const canSelect = (7 - totalPoints) >= char.ratio;
+                const isSelected = team[selectedSlot] && team[selectedSlot].name === char.name;
+                const canSelect = !isSelected && (7 - totalPoints + (team[selectedSlot] ? team[selectedSlot].ratio : 0)) >= char.ratio;
                 return (
                   <div key={char.name} className="character-item">
                     <button
                       onClick={() => handleCharacterClick(char)}
-                      disabled={!canSelect}
+                      disabled={!canSelect && !isSelected}
+                      className={isSelected ? 'selected' : ''}
                     >
                       <img 
                         src={char.tileImage} 
@@ -180,7 +195,8 @@ const RatioTeamBuilder = () => {
                       />
                     </button>
                     <div className="character-info">
-                      <span className="character-name">{char.name} ({char.ratio})</span>
+                      <span className="character-name">{char.name}</span>
+                      <span className="character-ratio">({char.ratio})</span>
                     </div>
                   </div>
                 );

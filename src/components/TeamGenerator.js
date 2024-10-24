@@ -89,13 +89,15 @@ const TeamGenerator = () => {
       <div className="team-display-large">
         {[0, 1, 2].map(renderCharacterSlot)}
       </div>
-      <button 
-        onClick={generateTeam} 
-        disabled={isGenerating}
-        className={`team-generator-button ${isGenerating ? 'generating' : ''}`}
-      >
-        {isGenerating ? 'Generating...' : 'Generate Team'}
-      </button>
+      <div className="team-generator-button-container">
+        <button 
+          onClick={generateTeam} 
+          disabled={isGenerating}
+          className={`team-generator-button ${isGenerating ? 'generating' : ''}`}
+        >
+          {isGenerating ? 'Assembling...' : 'Assemble My Team'}
+        </button>
+      </div>
     </div>
   );
 };
