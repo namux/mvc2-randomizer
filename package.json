@@ -33,8 +33,10 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "gh-pages": "^6.2.0",
-    "push-dir": "^0.4.1"
+    "push-dir": "^0.4.1",
+    "shx": "^0.3.4"
   },
   "homepage": "https://tech.nam-ux.com"
 }
