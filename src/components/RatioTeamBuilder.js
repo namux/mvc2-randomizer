@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { characters, getCharactersByRatio, getRandomCharacter } from '../data/characters';
 
 const RatioTeamBuilder = () => {
@@ -7,12 +7,13 @@ const RatioTeamBuilder = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const characterButtonsRef = useRef([]);
 
-  const handleCharacterClick = (character) => {
+  const handleCharacterClick = useCallback((character) => {
     if (selectedSlot !== null) {
       setTeam(prevTeam => {
         const newTeam = [...prevTeam];
-        // If the character is already in the selected slot, remove it
         if (newTeam[selectedSlot] && newTeam[selectedSlot].name === character.name) {
           newTeam[selectedSlot] = null;
         } else {
@@ -20,9 +21,7 @@ const RatioTeamBuilder = () => {
         }
         return newTeam;
       });
-      // Close the modal after selecting or deselecting a character
-      setIsModalOpen(false);
-      setSelectedSlot(null);
+      closeModal();
     } else {
       // Desktop behavior
       setTeam(prevTeam => {
@@ -44,7 +43,8 @@ const RatioTeamBuilder = () => {
         return prevTeam;
       });
     }
-  };
+    setSelectedCharacter(character.name);
+  }, [selectedSlot, totalPoints]);
 
   const openModal = (index) => {
     setSelectedSlot(index);
@@ -61,9 +61,15 @@ const RatioTeamBuilder = () => {
     setTotalPoints(newTotalPoints);
   }, [team]);
 
+  useEffect(() => {
+    // Clear selected character when team changes
+    setSelectedCharacter(null);
+  }, [team]);
+
   const resetTeam = () => {
     setTeam([null, null, null]);
     setTotalPoints(0);
+    setSelectedCharacter(null);
   };
 
   const generateRandomTeam = () => {
@@ -101,6 +107,7 @@ const RatioTeamBuilder = () => {
     
     setTeam(newTeam);
     setTotalPoints(points);
+    setSelectedCharacter(null);
   };
 
   return (
@@ -164,7 +171,7 @@ const RatioTeamBuilder = () => {
                 <button
                   onClick={() => handleCharacterClick(char)}
                   disabled={!isSelected && !canSelect}
-                  className={isSelected ? 'selected' : ''}
+                  className={selectedCharacter === char.name ? 'selected' : ''}
                 >
                   <img 
                     src={char.tileImage} 
