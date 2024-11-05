@@ -2,14 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { characters, getRandomCharacter } from '../data/characters';
 
 const TeamGenerator = () => {
-  const [team, setTeam] = useState([null, null, null]);
+  const defaultTeam = [
+    characters.find(char => char.name === 'Magneto'),
+    characters.find(char => char.name === 'Storm'),
+    characters.find(char => char.name === 'Psylocke')
+  ];
+
+  const [team, setTeam] = useState(defaultTeam);
   const [isSpinning, setIsSpinning] = useState([false, false, false]);
   const [isChosen, setIsChosen] = useState([false, false, false]);
 
   const generateTeam = () => {
     setIsSpinning([true, false, false]);
     setIsChosen([false, false, false]);
-    setTeam([null, null, null]);
+    setTeam([...defaultTeam]); // Reset to default team
 
     const selectCharacter = (index) => {
       setTimeout(() => {
@@ -18,12 +24,14 @@ const TeamGenerator = () => {
           newTeam[index] = getRandomCharacter(newTeam.filter(Boolean).map(c => c.name));
           return newTeam;
         });
+        
         setIsSpinning(prev => {
           const next = [...prev];
           next[index] = false;
           if (index < 2) next[index + 1] = true;
           return next;
         });
+
         setIsChosen(prev => {
           const next = [...prev];
           next[index] = true;
@@ -33,7 +41,7 @@ const TeamGenerator = () => {
         if (index < 2) {
           selectCharacter(index + 1);
         }
-      }, 1000);
+      }, 2000); // Duration for each character selection
     };
 
     selectCharacter(0);
@@ -41,27 +49,25 @@ const TeamGenerator = () => {
 
   const renderCharacterSlot = (index) => {
     const char = team[index];
-    if (isSpinning[index]) {
-      return (
-        <div key={`slot-${index}`} className="character-card spinning">
-          <img src={characters[Math.floor(Math.random() * characters.length)].image} alt="Spinning" />
+    return (
+      <div key={index} className="character-slot">
+        <div className={`character-card ${isSpinning[index] ? 'spinning' : ''} ${isChosen[index] ? 'chosen' : ''}`}>
+          {isSpinning[index] ? (
+            <img 
+              src={characters[Math.floor(Math.random() * characters.length)].image} 
+              alt="Spinning" 
+            />
+          ) : (
+            <img 
+              src={char.image} 
+              alt={char.name} 
+              onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} 
+            />
+          )}
         </div>
-      );
-    } else if (char) {
-      return (
-        <div key={char.name} className={`character-card ${isChosen[index] ? 'chosen' : ''}`}>
-          <img src={char.image} alt={char.name} onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} />
-          <p>{char.name}</p>
-        </div>
-      );
-    } else {
-      return (
-        <div key={`slot-${index + 1}`} className="character-card">
-          <img src={`/images/characters/slot-${index + 1}.png`} alt={`Empty Slot ${index + 1}`} />
-          <p>Empty Slot</p>
-        </div>
-      );
-    }
+        <p className="character-name">{char.name}</p>
+      </div>
+    );
   };
 
   useEffect(() => {
@@ -73,7 +79,7 @@ const TeamGenerator = () => {
             newTeam[index] = characters[Math.floor(Math.random() * characters.length)];
             return newTeam;
           });
-        }, 50); // Changed from 25 to 50 for slower spinning
+        }, 100);
       }
       return null;
     });
@@ -81,21 +87,19 @@ const TeamGenerator = () => {
     return () => intervals.forEach(interval => interval && clearInterval(interval));
   }, [isSpinning]);
 
-  const isGenerating = isSpinning.some(Boolean);
-
   return (
     <div>
-      <h2>MvC2 Team Generator</h2>
+      <h2>Random Team Generator</h2>
       <div className="team-display-large">
         {[0, 1, 2].map(renderCharacterSlot)}
       </div>
       <div className="team-generator-button-container">
         <button 
           onClick={generateTeam} 
-          disabled={isGenerating}
-          className={`team-generator-button ${isGenerating ? 'generating' : ''}`}
+          disabled={isSpinning.some(Boolean)}
+          className={`team-generator-button ${isSpinning.some(Boolean) ? 'generating' : ''}`}
         >
-          {isGenerating ? 'Assembling...' : 'Assemble My Team'}
+          {isSpinning.some(Boolean) ? 'Generating...' : 'Generate Team'}
         </button>
       </div>
     </div>
