@@ -51,21 +51,25 @@ const TeamGenerator = () => {
     const char = team[index];
     return (
       <div key={index} className="character-slot">
-        <div className={`character-card ${isSpinning[index] ? 'spinning' : ''} ${isChosen[index] ? 'chosen' : ''}`}>
+        <div className={`character-card ${isSpinning[index] ? 'spinning' : ''}`}>
           {isSpinning[index] ? (
             <img 
               src={characters[Math.floor(Math.random() * characters.length)].image} 
               alt="Spinning" 
             />
           ) : (
-            <img 
-              src={char.image} 
-              alt={char.name} 
-              onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} 
-            />
+            <>
+              <img 
+                src={char.image} 
+                alt={char.name} 
+                onError={(e) => { e.target.onerror = null; e.target.src = '/images/characters/default.png' }} 
+              />
+              {isChosen[index] && (
+                <p className="character-name">{char.name}</p>
+              )}
+            </>
           )}
         </div>
-        <p className="character-name">{char.name}</p>
       </div>
     );
   };
@@ -89,7 +93,9 @@ const TeamGenerator = () => {
 
   return (
     <div>
+      <div className="team-generator-header">
       <h2>Random Team Generator</h2>
+      </div>
       <div className="team-display-large">
         {[0, 1, 2].map(renderCharacterSlot)}
       </div>

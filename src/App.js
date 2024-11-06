@@ -42,23 +42,14 @@ function App() {
               >
                 MvC2 Team Generator
               </a>
-              <a 
-                href="#"
-                className={mode === 'ratio' ? 'active' : ''}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMode('ratio');
-                  setIsMenuOpen(false);
-                }}
-              >
-                MvC2 Ratio Builder
-              </a>
             </div>
           </div>
         </nav>
       </header>
       <main className="content-container">
-        {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
+        <div className="content-wrapper">
+          {mode === 'regular' ? <TeamGenerator /> : <RatioTeamBuilder />}
+        </div>
       </main>
 
       {isModalOpen && (
